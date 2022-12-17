@@ -8,4 +8,3 @@ class CustomUser(User):
     role_choice=((0,"Customer"),(1,"Coach"))
     role = models.CharField(max_length=1, choices=role_choice)
     objects = CustomUserManager()
-

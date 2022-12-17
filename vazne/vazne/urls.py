@@ -1,17 +1,14 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from django.urls import re_path as url
+from django.conf.urls import url
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',include("accounts.api.urls")),
     path('',include("accounts.urls")),
-    path('shop/', include('shop.urls')),
-    path('api/' , include('shop.urls')),
+    path('shop/', include('ShopStore.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/comments/', include(('comments.api.urls' , 'comments') , namespace = 'comments-api')),
 ] + static(settings.MEDIA_URL , document_root=settings.MEDIA_ROOT)
-
