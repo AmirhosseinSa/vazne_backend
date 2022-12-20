@@ -28,7 +28,13 @@ SECRET_KEY = 'django-insecure-ukp($0$-x$pjp3*=b8hj^bi8nmbfk%n=j%6#w2(1i8&_rt#na_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
+
+ALLOWED_HOSTS = [
+    "127.0.0.1", 
+]
+
 
 
 # Application definition
@@ -67,6 +73,7 @@ ROOT_URLCONF = 'vazne.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -88,11 +95,14 @@ WSGI_APPLICATION = 'vazne.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vazne',
+        'USER': 'admin',
+        'PASSWORD': '123456789',
+        'HOST': '127.0.0.1',
+        'PORT': '3307',
     }
 }
-
 CORS_ALLOW_CREDENTIALS = False
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
