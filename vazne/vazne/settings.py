@@ -103,6 +103,7 @@ DATABASES = {
         'PORT': '3307',
     }
 }
+
 CORS_ALLOW_CREDENTIALS = False
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
