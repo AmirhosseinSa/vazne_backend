@@ -5,18 +5,20 @@ from django.db import models
 def product_directory_path(instance, filename):
     return 'images/{0}/'.format(filename)
 
-class Category(models.Model):
-    name = models.CharField(max_length=255)
-    product = models.ManyToManyField('Product', related_name='categories', blank=True)
-    class Meta:
-        verbose_name_plural = 'categories'
-    def __str__(self):
-        return self.name
+# class Category(models.Model):
+#     name = models.CharField(max_length=255)
+#     product = models.ManyToManyField('Product', related_name='categories', blank=True)
+#     class Meta:
+#         verbose_name_plural = 'categories'
+#     def __str__(self):
+#         return self.name
     
 class Product(models.Model):
     product_name = models.CharField(max_length=250)
     product_code = models.CharField(max_length=250)
-    category = models.ManyToManyField(Category, related_name='products' , blank=False, default='category')
+    field_choice=(("football","football"),("basketball","basketball"),("swim","swim"))
+    fields = models.CharField(max_length=100, choices=field_choice)
+    # category = models.ManyToManyField(Category, related_name='products' , blank=False, default='category')
     describtion = models.TextField()
     slug = models.SlugField(max_length=250)
     data_added = models.DateTimeField()
@@ -30,6 +32,7 @@ class Product(models.Model):
     color = models.CharField(max_length=250)
     add_by = models.ForeignKey(User , on_delete=models.CASCADE)
     images = models.ImageField(upload_to='Images/', default = 'Images/None/No-img.jpg')
+    
     class Meta:
         ordering = ['-data_added']   
     def __str__(self):
@@ -40,6 +43,6 @@ class Comment(models.Model):
     title = models.CharField(max_length=255)
     body = models.TextField(blank=False)
     owner = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,  on_delete=models.CASCADE)
     def __str__(self):
         return self.title

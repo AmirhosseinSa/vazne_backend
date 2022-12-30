@@ -1,7 +1,7 @@
 from rest_framework import  permissions
 from django.contrib.auth.models import User 
-from .models import Product , Category , Comment
-from .serializers import  ProductSerializers , UserSerializers , CategorySerializers , CommentSerializers
+from .models import Product  , Comment
+from .serializers import  ProductSerializers , UserSerializers , CommentSerializers
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -38,7 +38,7 @@ class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter , django_filters.rest_framework.DjangoFilterBackend ,filters.OrderingFilter]
-    filterset_fields = ('category','product_name')
+    filterset_fields = ('product_name',)
     search_fields = ['product_name']
     ordering_fields = ['Unit_price', 'data_added']
     
@@ -47,7 +47,7 @@ class ProductList(generics.ListCreateAPIView):
     #     return Product.objects.filter(product_name = product_name)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(add_by=self.request.user)
 
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -71,16 +71,16 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommentSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-class CategoryList(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializers
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+# class CategoryList(generics.ListCreateAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializers
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
 
-class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
-    serializer_class = ProductSerializers
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+# class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = ProductSerializers
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

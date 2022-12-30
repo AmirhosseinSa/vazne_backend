@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from django.conf import settings
+import mysql.connector
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +55,10 @@ INSTALLED_APPS = [
     'django_filters',
     'ShopStore',
     'corsheaders',
+    'course',
+    'CartPage',
+    'coach',
+    
 ]
 
 MIDDLEWARE = [
