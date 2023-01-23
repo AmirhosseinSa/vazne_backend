@@ -14,7 +14,7 @@ class CustomUserAdmin(UserAdmin):
                     'is_staff', 'is_superuser', 'last_login',)
     list_filter = ('is_active', 'is_staff', 'is_superuser')
     fieldsets = (
-        (None, {'fields': ('username', 'email', 'password')}),
+        (None, {'fields': ('username', 'email', 'password','role')}),
         ('Permissions', {'fields': ('is_staff', 'is_active',
          'is_superuser', 'groups', 'user_permissions')}),
         ('Dates', {'fields': ('last_login', 'date_joined')})
@@ -28,5 +28,6 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser,CustomUserAdmin)
+#admin.site.register(CustomUser)
 admin.site.register(credit)

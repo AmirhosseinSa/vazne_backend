@@ -38,16 +38,15 @@ class RegisterSerializer(serializers.ModelSerializer):
     
 #------------Credit-------------
 class creditSerializer(serializers.ModelSerializer):
-    model = credit
+    # model = credit
     # credit_amount = serializers.CharField(write_only=True,
     #                                  required=True)
     
-    class Meta:
+    class Meta(object):
         model = credit
-        fields = ('amount', )
+        fields = '__all__' 
     
-    def create(self,request):
-        print(request['amount'])
-        amount=self.model(amount = request['amount'])
-        amount.save()
-        return amount
+    def create(self, validated_data):
+        obj = credit.objects.create(**validated_data)
+        obj.save()
+        return obj

@@ -1,4 +1,4 @@
-from ShopStore.models import Product
+from shop.models import Product
 from urllib import response
 from django.shortcuts import render, get_object_or_404
 #from .filters import ProductFilter

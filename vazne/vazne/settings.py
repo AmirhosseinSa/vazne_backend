@@ -55,9 +55,10 @@ INSTALLED_APPS = [
     'django_filters',
     'ShopStore',
     'corsheaders',
-    'course',
+    # 'course',
     'CartPage',
     'coach',
+    'class',
     
 ]
 
@@ -99,7 +100,7 @@ WSGI_APPLICATION = 'vazne.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vazne',
@@ -108,8 +109,14 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '3307',
     }
-}
+}'''
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 CORS_ALLOW_CREDENTIALS = False
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",

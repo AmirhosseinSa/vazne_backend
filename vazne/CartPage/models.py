@@ -93,10 +93,17 @@ class Cart(models.Model):
     def __str__(self):
         return str(self.id)
 
+ORDER_STATUS_CHOICES = (
+    ('unpaid', 'UnPaid'),
+    ('paid', 'Paid'),
+
+)
 class Cartitems(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="items", null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True, related_name='cartitems')
     quantity = models.PositiveSmallIntegerField(default=0)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='created')
+    
     
  
 

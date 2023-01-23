@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+import requests
+
 
 # Create your views here.
 from rest_framework import generics, permissions
@@ -15,6 +17,8 @@ from .serializers import UserSerializer, RegisterSerializer, creditSerializer
 import json
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+import django_filters.rest_framework
+
 class RegisterAPI(APIView):
     
     def get(self,request):
@@ -42,8 +46,10 @@ class LoginAPI(APIView):
     def get(self,request):
         return Response({'Message':'This is get method of Login API'},status =  status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self,request):
+        
         try:
+            
             input_data =  request.data
             username =  input_data.get('username')
             password =  input_data.get('password')
@@ -54,7 +60,7 @@ class LoginAPI(APIView):
 
                 url =  'http://localhost:8000'+reverse('token_obtain_pair')
                 data = {'username':username,'password':password}
-                tokens =  requests.post(url,data=data)
+                tokens = requests.post(url,data=data)
 
                 return Response({'Tokens':json.loads(tokens.content)},status = status.HTTP_200_OK)
             else:   
@@ -77,26 +83,41 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 # ------------Cart----------------
-class credit(APIView):
+# class credit(APIView):
     
-    def get(self,request):
-        try:
-            Credit = creditSerializer('amount')
-            return JsonResponse(Credit.data)
+#     def get(self,request):
+#         try:
+#             Credit = creditSerializer('amount')
+#             return JsonResponse(Credit.data)
         
-        except Exception as e:
-            return Response(status=status.HTTP_404_NOT_FOUND,
-                            data={'Error': str(e)})
+#         except Exception as e:
+#             return Response(status=status.HTTP_404_NOT_FOUND,
+#                             data={'Error': str(e)})
         
 
-    def post(self,request):
-        try:
-            obj =  creditSerializer(data = request.data)
-            if obj.is_valid():
-                obj.save()
-                return Response({'Message':'Successfully done!'},status = status.HTTP_200_OK)
-            return Response(obj.errors,status = status.HTTP_400_BAD_REQUEST)
+#     def post(self,request):
+#         try:
+#             obj =  creditSerializer(data = request.data)
+#             if obj.is_valid():
+#                 obj.save()
+#                 return Response({'Message':'Successfully done!'},status = status.HTTP_200_OK)
+#             return Response(obj.errors,status = status.HTTP_400_BAD_REQUEST)
 
-        except Exception as e:
-            return Response({'Message':'Something went wrong due to {}'.format(str(e))}, status = status.HTTP_400_BAD_REQUEST)
+#         except Exception as e:
+#             return Response({'Message':'Something went wrong due to {}'.format(str(e))}, status = status.HTTP_400_BAD_REQUEST)
+        
+
+class CreditList(generics.ListCreateAPIView):
+    queryset = credit.objects.all()
+    serializer_class = creditSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class CreditDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = credit.objects.all()
+    serializer_class = creditSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
  

@@ -1,3 +1,6 @@
+from django.shortcuts import render
+
+# Create your views here.
 from pyexpat.errors import messages
 from django.shortcuts import redirect, render
 

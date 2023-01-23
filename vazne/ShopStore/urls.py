@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from django.conf.urls import include , url
+from django.conf.urls import include 
 from rest_framework_simplejwt import views as jwt_views
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter

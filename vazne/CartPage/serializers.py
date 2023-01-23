@@ -1,6 +1,6 @@
 from importlib.resources import read_binary
-from ShopStore.models import Product
-
+from shop.models import Product
+from accounts import models
 from rest_framework import serializers
 from  .models import Cart, Cartitems
 
@@ -44,11 +44,12 @@ class CartItemSerializer(serializers.ModelSerializer):
     sub_total = serializers.SerializerMethodField( method_name="total")
     class Meta:
         model= Cartitems
-        fields = ["product", "quantity", "sub_total"]
+        fields = ["product", "quantity", "sub_total","status"]
         
     
     def total(self, cartitem:Cartitems):
         return cartitem.quantity * cartitem.product.Unit_price
+    
     
 
 class AddCartItemSerializer(serializers.ModelSerializer):
@@ -82,7 +83,7 @@ class AddCartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cartitems
-        fields = ["id", "product_id", "quantity"]
+        fields = ["id", "product_id", "quantity","status"]
 
 
 
@@ -104,4 +105,8 @@ class CartSerializer(serializers.ModelSerializer):
         for it in Cart.objects.all():
             items = it.items.all()
             total = sum([item.quantity * item.product.Unit_price for item in items])
+        
+        """if Cartitems.status=='paid':
+            models.credit.item_sold(total)"""
+            
         return total
